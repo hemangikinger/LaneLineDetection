@@ -79,3 +79,29 @@ def lines_drawn(img, lines, color=[255, 0, 0], thickness=6):
     cv2.line(img, (int(next_frame[4]), int(next_frame[5])), (int(next_frame[6]),int(next_frame[7])), color, thickness)
     
     cache = next_frame
+    
+def weighted_img(img, initial_img, α=0.8, β=1., λ=0.):
+    return cv2.addWeighted(initial_img, α, img, β, λ)
+def process_image(image):
+    global first_frame
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    img_hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+    lower_yellow = np.array([20, 100, 100], dtype = "uint8")
+    upper_yellow = np.array([30, 255, 255], dtype="uint8")
+    mask_yellow = cv2.inRange(img_hsv, lower_yellow, upper_yellow)
+    mask_white = cv2.inRange(gray_image, 200, 255)
+    mask_yw = cv2.bitwise_or(mask_white, mask_yellow)
+    mask_yw_image = cv2.bitwise_and(gray_image, mask_yw)
+    gauss_gray= cv2.GaussianBlur(mask_yw_image, (5, 5), 0)
+    canny_edges=cv2.Canny(gauss_gray, 50, 150)
+    imshape = image.shape
+    lower_left = [imshape[1]/9,imshape[0]]
+    lower_right = [imshape[1]-imshape[1]/9,imshape[0]]
+    top_left = [imshape[1]/2-imshape[1]/8,imshape[0]/2+imshape[0]/10]
+    top_right = [imshape[1]/2+imshape[1]/8,imshape[0]/2+imshape[0]/10]
+    vertices = [np.array([lower_left,top_left,top_right,lower_right],dtype=np.int32)]
+    roi_image = interested_region(canny_edges, vertices)
+    theta = np.pi/180
+    line_image = hough_lines(roi_image, 4, theta, 30, 100, 180)
+    result = weighted_img(line_image, image, α=0.8, β=1., λ=0.)
+    return result
