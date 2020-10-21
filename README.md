@@ -2,6 +2,8 @@ Lane Line detection is a critical component for self driving cars and also for c
 
 In this article, we will build a machine learning project to detect lane lines in real-time. We will do this using the concepts of computer vision using OpenCV library. To detect the lane we have to detect the white markings on both sides on the lane.
 
+![LL Detection](https://github.com/hemangikinger/LaneLineDetection/blob/master/lane-line-detection-ml-project-LL.jpg)
+
 ## Road Lane-Line Detection with Python & OpenCV
 
 Using computer vision techniques in Python, we will identify road lane lines in which autonomous cars must run. This will be a critical part of autonomous cars, as the self-driving cars should not cross it’s lane and should not go in opposite lane to avoid accidents.
@@ -18,13 +20,19 @@ After making we need to detect lane lines. The technique used to detect mathemat
 
 2. Apply frame masking and find region of interest:
 
-3. Conversion of pixels to a line in [Hough Transform space](https://homepages.inf.ed.ac.uk/rbf/HIPR2/hough.htm):
+3. Conversion of pixels to a line in Hough Transform space:
 
 4. Create two lines in each frame after Hough transform:
 
 5. Process each frame of video to detect lane:
 
 6. Clip the input video to frames and get the resultant output video file:
+
+### Code for Lane Line Detection Project GUI:
+
+![LL Detection](https://github.com/hemangikinger/LaneLineDetection/blob/master/Code-1.png)
+
+![LL Detection](https://github.com/hemangikinger/LaneLineDetection/blob/master/Code-2.png)
 
 ## Summary
 
